@@ -1,0 +1,22 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Setup key
+      - run: set -eu
+      - run: mkdir "$HOME/.ssh"
+      - run: echo "$" > "$HOME/.ssh/github"
+      - run: chmod 600 "$HOME/.ssh/github"
+      # Build
+      - run: npm ci
+      - run: npm run build
+      # Deploy
+      - run: rsync -e "ssh -p 20022 -i $HOME/.ssh/github -o StrictHostKeyChecking=no" --archive --compress --delete . root@193.168.49.106:/home/nikita/conf/web/api.artstyle.goryunoff.ru/app
