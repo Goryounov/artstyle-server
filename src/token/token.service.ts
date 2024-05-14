@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { JwtService } from '@nestjs/jwt'
 import { Repository } from 'typeorm'
 
-import { Token } from './token.entity'
+import { Token } from './entities/token.entity'
 import { User } from '../users/entities/user.entity'
 import { UsersService } from '../users/users.service'
 import { accessSecret, refreshSecret } from '../../config.js'

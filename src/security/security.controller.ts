@@ -14,11 +14,12 @@ import {
 import { SecurityService } from './security.service'
 import { CreateUserDto } from '../users/dto/create-user.dto'
 import { SigninUserDto } from '../users/dto/signin-user.dto'
-import { AuthGuard } from '../auth/auth.guard'
+import { AuthGuard } from '../guards/auth.guard'
 
 @Controller('auth')
 export class SecurityController {
-  constructor(private securityService: SecurityService) {}
+  constructor(private securityService: SecurityService) {
+  }
 
   @UsePipes(ValidationPipe)
   @Post('/signup')
@@ -74,10 +75,8 @@ export class SecurityController {
   }
 
   @Get('/user')
+  @UseGuards(AuthGuard)
   async user(@Req() req, @Res() res) {
-    const authorizationHeader = req.headers.authorization
-    const token: any = authorizationHeader.split(' ')[1]
-    const userData = await this.securityService.refresh(token)
-    res.json(userData)
+    res.json({ user: req.user })
   }
 }

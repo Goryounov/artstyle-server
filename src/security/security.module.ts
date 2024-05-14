@@ -6,9 +6,10 @@ import { SecurityService } from './security.service'
 import { SecurityController } from './security.controller'
 import { UsersModule } from '../users/users.module'
 import { AuthModule } from '../auth/auth.module'
+import { KeysModule } from '../keys/keys.module'
 
 @Module({
-  imports: [UsersModule, TokenModule, JwtModule, forwardRef(() => AuthModule)],
+  imports: [UsersModule, TokenModule, JwtModule, forwardRef(() => AuthModule), KeysModule],
   providers: [SecurityService],
   controllers: [SecurityController],
 })

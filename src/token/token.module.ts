@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { JwtModule } from '@nestjs/jwt'
 
 import { TokenService } from './token.service'
-import { Token } from './token.entity'
+import { Token } from './entities/token.entity'
 import { UsersModule } from '../users/users.module'
 
 @Module({
