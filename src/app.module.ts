@@ -11,6 +11,8 @@ import { SecurityModule } from './security/security.module'
 import { TasksModule } from './tasks/tasks.module'
 import { KeysModule } from './keys/keys.module'
 import { CallbacksModule } from './callbacks/callbacks.module';
+import { BullModule } from '@nestjs/bull'
+import { QueueModule } from './queue/queue.module'
 
 @Module({
   imports: [
@@ -27,6 +29,12 @@ import { CallbacksModule } from './callbacks/callbacks.module';
       synchronize: true,
       autoLoadEntities: true
     }),
+    BullModule.forRoot({
+      redis:{
+        host:process.env.REDIS_HOST,
+        port:parseInt(process.env.REDIS_PORT,10)
+      }
+    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads'
@@ -36,6 +44,7 @@ import { CallbacksModule } from './callbacks/callbacks.module';
     TokenModule,
     SecurityModule,
     TasksModule,
+    QueueModule,
     KeysModule,
     CallbacksModule
   ],
