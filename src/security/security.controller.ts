@@ -36,18 +36,13 @@ export class SecurityController {
   @Post('/signin')
   async login(@Body() SigninUserDto: SigninUserDto, @Res() res) {
     const userData = await this.securityService.signin(SigninUserDto)
-    // res.cookie('accessToken', userData.accessToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+    res.cookie('accessToken', userData.accessToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
     res.cookie('refreshToken', userData.refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
+      httpOnly: true
     })
 
-    const { accessToken, refreshToken, ...userRest } = userData
-    res.json({
-      token: accessToken,
-      refresh_token: refreshToken,
-      ...userRest,
-    })
+    res.json(userData)
   }
 
   @UseGuards(AuthGuard)
@@ -63,7 +58,7 @@ export class SecurityController {
     res.sendStatus(HttpStatus.OK)
   }
 
-  @Get('/refresh')
+  @Post('/refresh')
   async refresh(@Req() req, @Res() res) {
     const { refreshToken } = req.cookies
     const userData = await this.securityService.refresh(refreshToken)

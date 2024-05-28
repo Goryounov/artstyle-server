@@ -10,6 +10,7 @@ import { TokenModule } from './token/token.module'
 import { SecurityModule } from './security/security.module'
 import { TasksModule } from './tasks/tasks.module'
 import { KeysModule } from './keys/keys.module'
+import { CallbacksModule } from './callbacks/callbacks.module';
 
 @Module({
   imports: [
@@ -35,7 +36,8 @@ import { KeysModule } from './keys/keys.module'
     TokenModule,
     SecurityModule,
     TasksModule,
-    KeysModule
+    KeysModule,
+    CallbacksModule
   ],
 })
 
