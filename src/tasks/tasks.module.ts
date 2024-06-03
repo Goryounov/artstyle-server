@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { forwardRef, Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { JwtModule } from '@nestjs/jwt'
 
@@ -8,17 +8,20 @@ import { Task } from './entities/task.entity'
 import { UsersModule } from '../users/users.module'
 import { KeysModule } from '../keys/keys.module'
 import { TokenModule } from '../token/token.module'
+import { QueueModule } from '../queue/queue.module'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Task]),
     JwtModule.register({}),
+    forwardRef(() => QueueModule),
     TokenModule,
     KeysModule,
     UsersModule
   ],
   controllers: [TasksController],
   providers: [TasksService],
-  exports: [TasksService],
+  exports: [TasksService]
 })
+
 export class TasksModule {}

@@ -30,12 +30,12 @@ export class TokenService {
 
     const accessToken = this.jwtService.sign(payload, {
       expiresIn: '10m',
-      secret: ACCESS_SECRET,
+      secret: ACCESS_SECRET
     })
 
     const refreshToken = this.jwtService.sign(payload, {
       expiresIn: '30d',
-      secret: REFRESH_SECRET,
+      secret: REFRESH_SECRET
     })
 
     return {
@@ -45,9 +45,9 @@ export class TokenService {
   }
 
   async saveToken(userId: number, refreshToken: string) {
-    const userWithToken = await this.userService.getById(userId)
+    const user = await this.userService.getById(userId)
     const tokenData = await this.tokenRepository.findOne({
-      where: { user: userWithToken }
+      where: { user: user }
     })
 
     if (tokenData) {
@@ -56,7 +56,7 @@ export class TokenService {
     }
 
     const token = new Token()
-    token.user = userWithToken
+    token.user = user
     token.refreshToken = refreshToken
     await this.tokenRepository.save(token)
 

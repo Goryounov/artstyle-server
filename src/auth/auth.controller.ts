@@ -9,33 +9,36 @@ import {
   Res,
   UseGuards,
   UsePipes,
-  ValidationPipe,
+  ValidationPipe
 } from '@nestjs/common'
-import { SecurityService } from './security.service'
+import { AuthService } from './auth.service'
 import { CreateUserDto } from '../users/dto/create-user.dto'
 import { SigninUserDto } from '../users/dto/signin-user.dto'
 import { AuthGuard } from '../guards/auth.guard'
 
 @Controller('auth')
-export class SecurityController {
-  constructor(private securityService: SecurityService) {
+export class AuthController {
+  constructor(private securityService: AuthService) {
   }
 
   @UsePipes(ValidationPipe)
   @Post('/signup')
   async signup(@Body() CreateUserDto: CreateUserDto, @Res() res) {
     const userData = await this.securityService.signup(CreateUserDto)
+
     res.cookie('refreshToken', userData.refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     })
+
     res.json(userData)
   }
 
   @UsePipes(ValidationPipe)
   @Post('/signin')
-  async login(@Body() SigninUserDto: SigninUserDto, @Res() res) {
+  async signin(@Body() SigninUserDto: SigninUserDto, @Res() res) {
     const userData = await this.securityService.signin(SigninUserDto)
+
     res.cookie('accessToken', userData.accessToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
     res.cookie('refreshToken', userData.refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -54,6 +57,7 @@ export class SecurityController {
     }
 
     await this.securityService.logout(refreshToken)
+
     res.clearCookie('refreshToken')
     res.sendStatus(HttpStatus.OK)
   }
@@ -62,10 +66,12 @@ export class SecurityController {
   async refresh(@Req() req, @Res() res) {
     const { refreshToken } = req.cookies
     const userData = await this.securityService.refresh(refreshToken)
+
     res.cookie('refreshToken', userData.refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     })
+
     res.json(userData)
   }
 

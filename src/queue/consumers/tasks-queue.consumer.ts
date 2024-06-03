@@ -1,37 +1,39 @@
-import { Process, Processor, OnQueueError } from "@nestjs/bull";
-import { Logger } from "@nestjs/common";
-import { Job} from "bull";
-import { TasksService } from "src/tasks/tasks.service";
-import { TASKS_QUEUE_NAME } from "../queue.constants";
+import { Logger } from '@nestjs/common'
+import { Process, Processor, OnQueueError } from '@nestjs/bull'
+import { Job } from 'bull'
+
+import { TasksService } from '../../tasks/tasks.service'
+import { TASKS_QUEUE_NAME } from '../queue.constants'
+import { MLService } from '../../ml/ml.service'
 
 @Processor(TASKS_QUEUE_NAME)
-export class TasksQueueConsumer{
+export class TasksQueueConsumer {
+  constructor(
+    private readonly tasksService: TasksService,
+    private readonly mlService: MLService
+  ) {
+  }
 
-    private readonly logger=new Logger(TasksQueueConsumer.name);
-    constructor(
-        private readonly tasksService:TasksService
-    ){}
+  private readonly logger = new Logger(TasksQueueConsumer.name)
 
-    @Process()
-    async process(job:Job){
+  @Process()
+  async process(job: Job) {
+    const { taskId, imageUrl } = job.data
 
-        //load image using job.data.imgUrl
-        //request to ml controler
-        this.logger.log(
-            `process task\nid: ${job.data.taskId}\nimage: ${job.data.imgUrl}`
-        );
-        //wait for response from ml controler
+    this.logger.log(
+      `process task\nid: ${taskId}\nimage: ${imageUrl}`
+    );
 
-        //this.tasksService.complite()
+    const { classId } = this.mlService.getClass(taskId, imageUrl)
+    await this.tasksService.onComplete(taskId, classId)
 
+    return {}
+  }
 
-        return{}
-    }
-
-    @OnQueueError()
-    onError(error: Error){
-        this.logger.log(
-            `${error}`
-        );
-    }
+  @OnQueueError()
+  onError(error: Error) {
+    this.logger.log(
+      `${error}`
+    )
+  }
 }

@@ -25,6 +25,9 @@ export class Task {
   @Column()
   imageUrl: string
 
+  @Column({ nullable: true })
+  classId: number
+
   @Column({
     type: 'enum',
     enum: TaskStatus,

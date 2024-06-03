@@ -20,11 +20,6 @@ export class UsersController {
     return this.usersService.create(createUserDto)
   }
 
-  @Get()
-  findAll() {
-    return this.usersService.getAll()
-  }
-
   @Get(':id')
   async getById(@Param('id') id: string) {
     if (!Number(id))

@@ -5,14 +5,15 @@ import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 
 import { UsersModule } from './users/users.module'
-import { AuthModule } from './auth/auth.module'
 import { TokenModule } from './token/token.module'
-import { SecurityModule } from './security/security.module'
+import { AuthModule } from './auth/auth.module'
 import { TasksModule } from './tasks/tasks.module'
 import { KeysModule } from './keys/keys.module'
-import { CallbacksModule } from './callbacks/callbacks.module';
+import { CallbacksModule } from './callbacks/callbacks.module'
 import { BullModule } from '@nestjs/bull'
 import { QueueModule } from './queue/queue.module'
+import { MlModule } from './ml/ml.module'
+import { ClassesModule } from './classes/classes.module'
 
 @Module({
   imports: [
@@ -30,9 +31,9 @@ import { QueueModule } from './queue/queue.module'
       autoLoadEntities: true
     }),
     BullModule.forRoot({
-      redis:{
-        host:process.env.REDIS_HOST,
-        port:parseInt(process.env.REDIS_PORT,10)
+      redis: {
+        host: process.env.REDIS_HOST,
+        port: parseInt(process.env.REDIS_PORT, 10)
       }
     }),
     ServeStaticModule.forRoot({
@@ -40,13 +41,14 @@ import { QueueModule } from './queue/queue.module'
       serveRoot: '/uploads'
     }),
     UsersModule,
-    AuthModule,
     TokenModule,
-    SecurityModule,
+    AuthModule,
     TasksModule,
     QueueModule,
     KeysModule,
-    CallbacksModule
+    CallbacksModule,
+    MlModule,
+    ClassesModule
   ],
 })
 

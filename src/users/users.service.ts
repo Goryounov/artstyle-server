@@ -22,10 +22,6 @@ export class UsersService {
     return await this.usersRepository.manager.save(user)
   }
 
-  async getAll() {
-    return await this.usersRepository.find()
-  }
-
   async getById(id: number) {
     return await this.usersRepository.findOne({
       where: { id: id },
