@@ -4,13 +4,13 @@ import {
   Get,
   Post,
   Req,
-  UploadedFile,
+  UploadedFiles,
   UseGuards,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common'
 import { TasksService } from './tasks.service'
 import { AuthGuard } from '../guards/auth.guard'
-import { FileInterceptor } from '@nestjs/platform-express'
+import { FilesInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
 import { extname } from 'path'
 
@@ -27,12 +27,12 @@ export class TasksController {
 
   @Post()
   @UseGuards(AuthGuard)
-  @UseInterceptors(FileInterceptor('Image', {
+  @UseInterceptors(FilesInterceptor('Images', 10, {
     storage: diskStorage({
       destination: './uploads',
       filename: (req, file, cb) => {
-        const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
-        return cb(null, `${randomName}${extname(file.originalname)}`)
+        const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('');
+        return cb(null, `${randomName}${extname(file.originalname)}`);
       },
     }),
     limits: {
@@ -40,11 +40,15 @@ export class TasksController {
     },
   }))
 
-  uploadImage(@Req() req, @UploadedFile() file) {
-    if (!file) {
-      throw new BadRequestException('No file uploaded');
+  uploadImages(@Req() req, @UploadedFiles() files) {
+    if (!files || files.length === 0) {
+      throw new BadRequestException('No files uploaded')
     }
 
-    return this.tasksService.create(req.user, { imageUrl: file.path })
+    return files.reduce(async (promiseChain: any, file: { path: any }) => {
+      const chainResults = await promiseChain
+      const result = await this.tasksService.create(req.user, { imageUrl: file.path })
+      return [...chainResults, result];
+    }, Promise.resolve([]))
   }
 }

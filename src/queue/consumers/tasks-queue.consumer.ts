@@ -10,7 +10,7 @@ import { MLService } from '../../ml/ml.service'
 export class TasksQueueConsumer {
   constructor(
     private readonly tasksService: TasksService,
-    private readonly mlService: MLService
+    private readonly mlService: MLService,
   ) {
   }
 
@@ -21,19 +21,26 @@ export class TasksQueueConsumer {
     const { taskId, imageUrl } = job.data
 
     this.logger.log(
-      `process task\nid: ${taskId}\nimage: ${imageUrl}`
-    );
+      `process task\nid: ${taskId}\nimage: ${imageUrl}`,
+    )
 
-    const { classId } = this.mlService.getClass(taskId, imageUrl)
-    await this.tasksService.onComplete(taskId, classId)
-
-    return {}
+    let status: string
+    let classId: number
+    try {
+      classId = await this.mlService.getClass(taskId, imageUrl)
+      status = 'completed'
+    } catch (err) {
+      this.logger.log(`[taskId: ${taskId}]`, err.message)
+      status = 'failed'
+    } finally {
+      await this.tasksService.onComplete(taskId, status, classId)
+    }
   }
 
   @OnQueueError()
   onError(error: Error) {
     this.logger.log(
-      `${error}`
+      `${error}`,
     )
   }
 }

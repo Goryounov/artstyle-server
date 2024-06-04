@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
-import { Task } from './entities/task.entity'
+import { Task, TaskStatus } from './entities/task.entity'
 import { UsersService } from '../users/users.service'
 import { QueueService } from '../queue/queue.service'
 import { host } from '../../config.js'
@@ -36,10 +36,11 @@ export class TasksService {
     return task
   }
 
-  async onComplete(taskId: number, classId: number) {
+  async onComplete(taskId: number, status: string, classId: number) {
     let task = await this.tasksRepository.findOne({ where: { id: taskId } })
     if (!task) throw new Error('Task not found')
 
+    task.status = <TaskStatus>status
     task.classId = classId
     return this.tasksRepository.save(task)
   }
