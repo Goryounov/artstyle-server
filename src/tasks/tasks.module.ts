@@ -9,6 +9,7 @@ import { UsersModule } from '../users/users.module'
 import { KeysModule } from '../keys/keys.module'
 import { TokenModule } from '../token/token.module'
 import { QueueModule } from '../queue/queue.module'
+import { SocketsModule } from '../sockets/sockets.module'
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { QueueModule } from '../queue/queue.module'
     forwardRef(() => QueueModule),
     TokenModule,
     KeysModule,
-    UsersModule
+    UsersModule,
+    SocketsModule
   ],
   controllers: [TasksController],
   providers: [TasksService],

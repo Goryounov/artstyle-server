@@ -6,7 +6,8 @@ import { Repository } from 'typeorm'
 import { Token } from './entities/token.entity'
 import { User } from '../users/entities/user.entity'
 import { UsersService } from '../users/users.service'
-import { accessSecret, refreshSecret } from '../../config.js'
+// @ts-ignore
+import { accessSecret, refreshSecret } from '../../config'
 
 const ACCESS_SECRET = accessSecret
 const REFRESH_SECRET = refreshSecret

@@ -5,14 +5,17 @@ import { Repository } from 'typeorm'
 import { Task, TaskStatus } from './entities/task.entity'
 import { UsersService } from '../users/users.service'
 import { QueueService } from '../queue/queue.service'
-import { host } from '../../config.js'
+import { SocketsGateway } from '../sockets/sockets.gateway'
+// @ts-ignore
+import { host } from '../../config'
 
 @Injectable()
 export class TasksService {
   constructor(
     @InjectRepository(Task) private tasksRepository: Repository<Task>,
     private userService: UsersService,
-    private queueService: QueueService
+    private queueService: QueueService,
+    private readonly socketsGateway: SocketsGateway
   ) {
   }
 
@@ -42,6 +45,12 @@ export class TasksService {
 
     task.status = <TaskStatus>status
     task.classId = classId
-    return this.tasksRepository.save(task)
+    task = await this.tasksRepository.save(task)
+
+    this.socketsGateway.sendMessage('task-updated', {
+      taskId,
+      classId,
+      status
+    })
   }
 }

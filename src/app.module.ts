@@ -14,6 +14,7 @@ import { BullModule } from '@nestjs/bull'
 import { QueueModule } from './queue/queue.module'
 import { MlModule } from './ml/ml.module'
 import { ClassesModule } from './classes/classes.module'
+import { SocketsModule } from './sockets/sockets.module'
 
 @Module({
   imports: [
@@ -28,7 +29,9 @@ import { ClassesModule } from './classes/classes.module'
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
       synchronize: true,
-      autoLoadEntities: true
+      autoLoadEntities: true,
+      migrations: [ 'src/database/seeds/**/*{.ts,.js}' ],
+      migrationsRun: true
     }),
     BullModule.forRoot({
       redis: {
@@ -48,7 +51,8 @@ import { ClassesModule } from './classes/classes.module'
     KeysModule,
     CallbacksModule,
     MlModule,
-    ClassesModule
+    ClassesModule,
+    SocketsModule
   ],
 })
 

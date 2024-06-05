@@ -18,7 +18,12 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "typeorm": "ts-node ./node_modules/typeorm/cli",
+    "typeorm:run-migrations": "npm run typeorm migration:run -- -d ./typeorm.config.ts",
+    "typeorm:revert-migrations": "npm run typeorm -- -d ./typeorm.config.ts migration:revert",
+    "typeorm:generate-migration": "npm run typeorm -- -d ./typeorm.config.ts migration:generate ./migrations/$npm_config_name",
+    "typeorm:create-migration": "npm run typeorm -- migration:create ./migrations/$npm_config_name"
   },
   "dependencies": {
     "@nestjs/bull": "^10.1.1",
@@ -26,11 +31,14 @@
     "@nestjs/config": "^3.2.2",
     "@nestjs/core": "^10.3.8",
     "@nestjs/jwt": "^10.2.0",
+    "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.3.8",
+    "@nestjs/platform-socket.io": "^10.3.9",
     "@nestjs/serve-static": "^4.0.2",
     "@nestjs/swagger": "^7.3.1",
     "@nestjs/typeorm": "^10.0.2",
+    "@paranode/typeorm-seeding": "^3.1.2",
     "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
     "bull": "^4.12.6",
@@ -48,6 +56,7 @@
     "reflect-metadata": "^0.2.2",
     "rimraf": "^5.0.7",
     "rxjs": "^7.8.1",
+    "socket.io": "^4.7.5",
     "swagger-ui-express": "^5.0.0",
     "typeorm": "^0.3.20",
     "uuid": "^9.0.1"
