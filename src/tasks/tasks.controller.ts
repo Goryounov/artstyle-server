@@ -37,14 +37,6 @@ export class TasksController {
     }),
     limits: {
       fileSize: 10 * 1024 * 1024, // 10MB
-    },
-    fileFilter: (req, file, cb) => {
-      const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png']
-      if (allowedMimeTypes.includes(file.mimetype)) {
-        cb(null, true)
-      } else {
-        cb(new BadRequestException('Unsupported file type'), false)
-      }
     }
   }))
 
