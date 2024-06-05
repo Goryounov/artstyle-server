@@ -27,7 +27,7 @@ export class TasksController {
 
   @Post()
   @UseGuards(AuthGuard)
-  @UseInterceptors(FilesInterceptor('Images', 10, {
+  @UseInterceptors(FilesInterceptor('Images', 100, {
     storage: diskStorage({
       destination: './uploads',
       filename: (req, file, cb) => {
