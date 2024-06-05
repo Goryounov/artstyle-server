@@ -12,7 +12,7 @@ export class MLService {
   async getClass(taskId: number, imageUrl: string) {
     try {
       // @ts-ignore
-      const { classId } = await axios.post(mlModelHost, {
+      const { classId } = await axios.post(`${mlModelHost}/preprocess/`, {
         taskId,
         imageUrl,
       })
