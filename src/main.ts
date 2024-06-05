@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import * as cookieParser from 'cookie-parser'
 import { AppModule } from './app.module'
+import { ClusterService } from './cluster.service'
 
 async function bootstrap() {
   const PORT = process.env.PORT || 5000
@@ -27,4 +28,4 @@ async function bootstrap() {
   await app.listen(PORT, () => console.log(`App is running at ${PORT}`))
 }
 
-bootstrap()
+ClusterService.clusterize(bootstrap)
