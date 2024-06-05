@@ -3,14 +3,14 @@ import { Process, Processor, OnQueueError } from '@nestjs/bull'
 import { Job } from 'bull'
 
 import { TasksService } from '../../tasks/tasks.service'
-import { TASKS_QUEUE_NAME } from '../queue.constants'
 import { MLService } from '../../ml/ml.service'
+import { TASKS_QUEUE_NAME } from '../queue.constants'
 
 @Processor(TASKS_QUEUE_NAME)
 export class TasksQueueConsumer {
   constructor(
     private readonly tasksService: TasksService,
-    private readonly mlService: MLService,
+    private readonly mlService: MLService
   ) {
   }
 
@@ -19,10 +19,7 @@ export class TasksQueueConsumer {
   @Process()
   async process(job: Job) {
     const { taskId, imageUrl } = job.data
-
-    this.logger.log(
-      `process task\nid: ${taskId}\nimage: ${imageUrl}`,
-    )
+    this.logger.log(`Process task id: ${taskId}, image: ${imageUrl}`)
 
     let status: string
     let classId: number

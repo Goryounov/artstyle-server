@@ -12,7 +12,7 @@ export class CallbacksController {
   @Get()
   @UseGuards(AuthGuard)
   getAll(@Req() req) {
-    return this.callbacksService.getAll(req.user)
+    return this.callbacksService.getAll(req.user.id)
   }
 
   @Post()

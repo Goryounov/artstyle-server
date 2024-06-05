@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
 import { Task, TaskStatus } from './entities/task.entity'
-import { UsersService } from '../users/users.service'
 import { QueueService } from '../queue/queue.service'
 import { SocketsGateway } from '../sockets/sockets.gateway'
 // @ts-ignore
@@ -13,7 +12,6 @@ import { host } from '../../config'
 export class TasksService {
   constructor(
     @InjectRepository(Task) private tasksRepository: Repository<Task>,
-    private userService: UsersService,
     private queueService: QueueService,
     private readonly socketsGateway: SocketsGateway
   ) {
@@ -33,7 +31,6 @@ export class TasksService {
     task.imageUrl = `${host}/${createTaskDto.imageUrl}`
 
     task = await this.tasksRepository.manager.save(task)
-
     await this.queueService.addTasks(task.id, task.imageUrl)
 
     return task
@@ -52,5 +49,7 @@ export class TasksService {
       classId,
       status
     })
+
+    await this.queueService.addCallback(task.userId, task.id, classId)
   }
 }

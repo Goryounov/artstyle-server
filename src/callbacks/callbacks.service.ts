@@ -5,8 +5,7 @@ import { Repository } from 'typeorm'
 import { CreateCallbackDto } from './dto/create-callback.dto'
 import { UpdateCallbackDto } from './dto/update-callback.dto'
 import { Callback } from './entities/callback.entity'
-import { CreateKeyDto } from '../keys/dto/create-key.dto';
-import { Key } from '../keys/entities/key.entity';
+import { User } from '../users/entities/user.entity'
 
 @Injectable()
 export class CallbacksService {
@@ -15,15 +14,15 @@ export class CallbacksService {
   ) {
   }
 
-  async getAll(user) {
+  async getAll(userId: number) {
     return this.callbacksRepository.find({
       where: {
-        userId: user.id
+        userId
       }
     })
   }
 
-  create(user, createCallbackDto: CreateCallbackDto) {
+  create(user: User, createCallbackDto: CreateCallbackDto) {
     const callback = new Callback()
     callback.user = user
     callback.url = createCallbackDto.url

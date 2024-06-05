@@ -7,6 +7,7 @@ import { TasksQueueConsumer } from './consumers/tasks-queue.consumer'
 import { CallbacksQueueConsumer } from './consumers/callbacks-queue.consumer'
 import { TasksModule } from '../tasks/tasks.module'
 import { MlModule } from '../ml/ml.module'
+import { CallbacksModule } from '../callbacks/callbacks.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { MlModule } from '../ml/ml.module'
       name: CALLBACKS_QUEUE_NAME
     }),
     forwardRef(() => TasksModule),
-    MlModule
+    MlModule,
+    CallbacksModule
   ],
   providers: [QueueService, TasksQueueConsumer, CallbacksQueueConsumer],
   exports: [QueueService]

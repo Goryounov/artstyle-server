@@ -19,10 +19,11 @@ export class QueueService {
     })
   }
 
-  async addCallBackTask(url: string, classId: number) {
+  async addCallback(userId: number, taskId: number, classId: number) {
     await this.callbackQueue.add({
-      url: url,
-      classId: classId
+      userId,
+      taskId,
+      classId
     })
   }
 }
