@@ -30,18 +30,18 @@ import { SocketsModule } from './sockets/sockets.module'
       database: process.env.POSTGRES_DB,
       synchronize: true,
       autoLoadEntities: true,
-      migrations: [ 'src/database/seeds/**/*{.ts,.js}' ],
-      migrationsRun: true
+      migrations: ['src/database/seeds/**/*{.ts,.js}'],
+      migrationsRun: true,
     }),
     BullModule.forRoot({
       redis: {
         host: process.env.REDIS_HOST,
-        port: parseInt(process.env.REDIS_PORT, 10)
-      }
+        port: parseInt(process.env.REDIS_PORT, 10),
+      },
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../../', 'uploads'),
-      serveRoot: '/uploads'
+      serveRoot: '/uploads',
     }),
     UsersModule,
     TokenModule,
@@ -52,8 +52,9 @@ import { SocketsModule } from './sockets/sockets.module'
     CallbacksModule,
     MlModule,
     ClassesModule,
-    SocketsModule
+    SocketsModule,
   ],
 })
 
-export class AppModule {}
+export class AppModule {
+}

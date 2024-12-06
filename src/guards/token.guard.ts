@@ -7,7 +7,7 @@ import {
 import { Observable } from 'rxjs'
 import { JwtService } from '@nestjs/jwt'
 // @ts-ignore
-import { accessSecret } from '../../config'
+import { accessSecret } from '../config'
 
 const ACCESS_SECRET = accessSecret
 

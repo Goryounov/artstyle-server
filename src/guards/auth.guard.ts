@@ -9,7 +9,7 @@ import { JwtService } from '@nestjs/jwt'
 import { KeysService } from '../keys/keys.service'
 import { UsersService } from '../users/users.service'
 // @ts-ignore
-import { accessSecret } from '../../config'
+import { accessSecret } from '../config'
 
 const ACCESS_SECRET = accessSecret
 

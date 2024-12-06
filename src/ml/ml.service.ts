@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import axios from 'axios'
 
 // @ts-ignore
-import { mlModelHost } from '../../config'
+import { mlModelHost } from '../config'
 
 @Injectable()
 export class MLService {

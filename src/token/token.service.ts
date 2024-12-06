@@ -7,7 +7,7 @@ import { Token } from './entities/token.entity'
 import { User } from '../users/entities/user.entity'
 import { UsersService } from '../users/users.service'
 // @ts-ignore
-import { accessSecret, refreshSecret } from '../../config'
+import { accessSecret, refreshSecret } from '../config'
 
 const ACCESS_SECRET = accessSecret
 const REFRESH_SECRET = refreshSecret

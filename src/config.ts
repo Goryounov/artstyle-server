@@ -1,8 +1,8 @@
 const config = {
-  host: process.env.HOST || 'http://192.168.199.235:5001',
+  host: process.env.HOST || 'http://localhost:8000',
   accessSecret: process.env.ACCESS_SECRET || 'ACCESS_SECRET',
   refreshSecret: process.env.REFRESH_SECRET || 'REFRESH_SECRET',
-  mlModelHost: 'http://192.168.199.235:81'
+  mlModelHost: process.env.ML_MODEL_HOST || 'http://localhost:8080',
 }
 
 module.exports = config

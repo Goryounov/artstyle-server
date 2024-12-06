@@ -6,7 +6,7 @@ import { Task, TaskStatus } from './entities/task.entity'
 import { QueueService } from '../queue/queue.service'
 import { SocketsGateway } from '../sockets/sockets.gateway'
 // @ts-ignore
-import { host } from '../../config'
+import { host } from '../config'
 
 @Injectable()
 export class TasksService {
